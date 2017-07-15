@@ -1,0 +1,34 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="PrimaryTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="SecondaryTextStyle">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="BaseHeaderStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="RightHeaderStyle" parent="BaseHeaderStyle">
+        <item name="android:gravity">right</item>
+    </style>
+
+    <style name="CollapsingToolbarTextAppearance">
+        <item name="android:paddingLeft">80dp</item>
+        <item name="android:layout_marginLeft">80dp</item>
+    </style>
+
+</resources>

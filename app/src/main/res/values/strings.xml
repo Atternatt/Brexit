@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">The Guardian</string>
+    <string name="no_article_title">No article title</string>
+    <string name="no_article_date">No date</string>
+    <string name="error_empty_article">Error empty article</string>
+    <string name="toolbar">toolbar</string>
+    <string name="error">Error</string>
+    <string name="favorite_deleted">Favorite deleted</string>
+    <string name="favorite_added">Favorite added</string>
+</resources>
