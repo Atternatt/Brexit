@@ -10,7 +10,7 @@ import com.sanogueralorenzo.brexit.R
 import com.sanogueralorenzo.brexit.presentation.App
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.ArticleItem
 import com.sanogueralorenzo.brexit.presentation.gone
-import com.sanogueralorenzo.brexit.presentation.loadurl
+import com.sanogueralorenzo.brexit.presentation.loadUrl
 import kotlinx.android.synthetic.main.activity_guardian_article_details.*
 import org.jetbrains.anko.toast
 import javax.inject.Inject
@@ -56,7 +56,7 @@ class GuardianArticleDetailsActivity : AppCompatActivity(), GuardianArticleDetai
 
         articleDetailsToolbar.setNavigationOnClickListener { onBackPressed() }
         articleDetailsFavoriteImageView.setOnClickListener { guardianArticleDetailsPresenter.saveFavorite(article.id!!) }
-        articleDetailsImageView.loadurl(article.url)
+        articleDetailsImageView.loadUrl(article.url)
         articleDetailsTitleTextView.text = article.title
 
         guardianArticleDetailsPresenter.attachView(this)
