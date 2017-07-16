@@ -15,7 +15,7 @@ class GuardianArticleListModule {
     fun provideArticleListApi(retrofit: Retrofit): ArticleListApi = retrofit.create(ArticleListApi::class.java)
 
     @Provides
-    fun provideArticleListRepository(articleListApi: ArticleListApi, localDataSource: SharedPreferencesManager): ArticleListRepository = ArticleListRepository(articleListApi, localDataSource)
+    fun provideArticleListRepository(articleListApi: ArticleListApi, sharedPreferencesManager: SharedPreferencesManager): ArticleListRepository = ArticleListRepository(articleListApi, sharedPreferencesManager)
 
     @Provides
     fun provideArticleListPresenter(articleListRepository: ArticleListRepository): GuardianArticleListPresenter = GuardianArticleListPresenter(articleListRepository)

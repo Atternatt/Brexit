@@ -15,7 +15,7 @@ class GuardianArticleDetailsModule {
     fun provideArticleDetailsApi(retrofit: Retrofit): ArticleDetailsApi = retrofit.create(ArticleDetailsApi::class.java)
 
     @Provides
-    fun provideArticleDetailsRepository(articleDetailsApi: ArticleDetailsApi, localDataSource: SharedPreferencesManager): ArticleDetailsRepository = ArticleDetailsRepository(articleDetailsApi, localDataSource)
+    fun provideArticleDetailsRepository(articleDetailsApi: ArticleDetailsApi, sharedPreferencesManager: SharedPreferencesManager): ArticleDetailsRepository = ArticleDetailsRepository(articleDetailsApi, sharedPreferencesManager)
 
     @Provides
     fun provideArticleDetailsPresenter(articleDetailsRepository: ArticleDetailsRepository): GuardianArticleDetailsPresenter = GuardianArticleDetailsPresenter(articleDetailsRepository)
