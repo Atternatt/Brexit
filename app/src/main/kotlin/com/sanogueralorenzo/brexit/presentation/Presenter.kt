@@ -1,5 +1,7 @@
 package com.sanogueralorenzo.brexit.presentation
 
+import io.reactivex.disposables.CompositeDisposable
+
 interface IView
 
 interface IPresenter<in V : IView> {
@@ -10,6 +12,7 @@ interface IPresenter<in V : IView> {
 open class Presenter<V : IView> : IPresenter<V> {
 
     protected var view: V? = null
+    protected val disposable : CompositeDisposable = CompositeDisposable()
 
     override fun attachView(view: V) {
         this.view = view
@@ -17,5 +20,10 @@ open class Presenter<V : IView> : IPresenter<V> {
 
     override fun detachView() {
         this.view = null
+        clear()
+    }
+
+    private fun clear(){
+        disposable.clear()
     }
 }

@@ -1,24 +1,29 @@
 package com.sanogueralorenzo.brexit.presentation.articlelist
 
+import com.sanogueralorenzo.brexit.data.model.Result
+import com.sanogueralorenzo.brexit.domain.repositories.ArticleListRepository
+import com.sanogueralorenzo.brexit.presentation.*
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.header.HeaderItem
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.WeekItem
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.ArticleItem
-import com.sanogueralorenzo.brexit.data.model.Result
-import com.sanogueralorenzo.brexit.domain.repositories.ArticleListRepository
-import com.sanogueralorenzo.brexit.presentation.Presenter
-import com.sanogueralorenzo.brexit.presentation.commons.adapter.ViewType
-import com.sanogueralorenzo.brexit.presentation.isNewWeek
-import com.sanogueralorenzo.brexit.presentation.weekAgoFormat
+import com.sanogueralorenzo.brexit.presentation.commons.ViewType
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 import kotlin.collections.ArrayList
 
+interface GuardianArticleListView : IView {
+    fun addItemList(itemList: List<ViewType>)
+    fun onError()
+}
 
 class GuardianArticleListPresenter(val articleListRepository: ArticleListRepository) : Presenter<GuardianArticleListView>() {
 
-    private var disposable: Disposable? = null
+    override fun attachView(view: GuardianArticleListView) {
+        super.attachView(view)
+        getCacheArticleList()
+        getArticleList()
+    }
 
     fun getCacheArticleList() {
         val articleList = articleListRepository.getCacheArticleList()
@@ -28,11 +33,12 @@ class GuardianArticleListPresenter(val articleListRepository: ArticleListReposit
     }
 
     fun getArticleList() {
-        disposable = articleListRepository.getArticleList()
+        disposable.add(articleListRepository.getArticleList(1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .map { it.response.results.orderByDescendingWebPublicationDate() }
                 .doOnNext { save(it) }
-                .subscribe({ view?.addItemList(createItemList(ArrayList(it))) }, { view?.onError() })
+                .subscribe({ view?.addItemList(createItemList(ArrayList(it))) }, { view?.onError() }))
     }
 
     fun createItemList(resultList: ArrayList<Result>): List<ViewType> {
@@ -55,8 +61,10 @@ class GuardianArticleListPresenter(val articleListRepository: ArticleListReposit
                         favoriteArticleList.add(createArticleItem(it))
                         resultList.remove(it)
                     }
-            itemList.add(createHeaderItem("Favorites"))
-            itemList.add(createWeekItem(favoriteArticleList))
+            if (!favoriteArticleList.isEmpty()){
+                itemList.add(createHeaderItem("Favorites"))
+                itemList.add(createWeekItem(favoriteArticleList))
+            }
         }
     }
 
@@ -104,9 +112,4 @@ class GuardianArticleListPresenter(val articleListRepository: ArticleListReposit
     fun save(articleList: List<Result>) {
         articleListRepository.saveArticleList(articleList)
     }
-
-    fun dispose() {
-        disposable?.dispose()
-    }
-
 }

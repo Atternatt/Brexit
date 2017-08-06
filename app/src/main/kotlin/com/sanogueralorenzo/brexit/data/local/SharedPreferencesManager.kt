@@ -5,12 +5,7 @@ import android.preference.PreferenceManager
 import com.google.gson.Gson
 import java.lang.reflect.Type
 
-/**
- * Consider using Realm: https://github.com/realm/realm-java
- * Consider using Store: https://github.com/NYTimes/Store
- */
 class SharedPreferencesManager(context: Context) {
-
     private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun save(key: String, value: String) = prefs.edit().putString(key, value).apply()

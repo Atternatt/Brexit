@@ -10,7 +10,6 @@ import retrofit2.Retrofit
 
 @Module
 class GuardianArticleListModule {
-
     @Provides
     fun provideArticleListApi(retrofit: Retrofit): ArticleListApi = retrofit.create(ArticleListApi::class.java)
 
@@ -19,5 +18,4 @@ class GuardianArticleListModule {
 
     @Provides
     fun provideArticleListPresenter(articleListRepository: ArticleListRepository): GuardianArticleListPresenter = GuardianArticleListPresenter(articleListRepository)
-
 }

@@ -15,30 +15,19 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-
-/**
- * How can I check that the RetrofitModule is really a Singleton?
- *
- * If you aren't using any dependency injection check DemoApiFactory and might give a read to
- * Lazy initialization: https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-lazy/
- */
-
 @Module
 @Singleton
 class RetrofitModule {
-
     private val BASE_URL = "http://content.guardianapis.com"
     private val HEADER_API_KEY = "api-key"
     private val GUARDIAN_API_KEY = "enj8pstqu5yat6yesfsdmd39"
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     fun provideAuthInterceptor(): Interceptor = Interceptor { chain ->
         chain.proceed(chain.request().newBuilder().addHeader(HEADER_API_KEY, GUARDIAN_API_KEY).build())
     }
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     fun provideHttpClient(authInterceptor: Interceptor): OkHttpClient {
         val clientBuilder = OkHttpClient.Builder()
         if (BuildConfig.DEBUG) {
@@ -53,19 +42,16 @@ class RetrofitModule {
         return clientBuilder.build()
     }
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     fun provideMoshi(): Moshi = Moshi.Builder()
             .add<Date>(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
             .build()
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
-
 }

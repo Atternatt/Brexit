@@ -6,10 +6,16 @@ import android.view.ViewGroup
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.ArticleAdapter
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.OnArticleClickListener
 import com.sanogueralorenzo.brexit.R
-import com.sanogueralorenzo.brexit.presentation.commons.adapter.ViewType
-import com.sanogueralorenzo.brexit.presentation.commons.adapter.ViewTypeDelegateAdapter
+import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.ArticleItem
+import com.sanogueralorenzo.brexit.presentation.commons.AdapterConstants
+import com.sanogueralorenzo.brexit.presentation.commons.ViewType
+import com.sanogueralorenzo.brexit.presentation.commons.ViewTypeDelegateAdapter
 import com.sanogueralorenzo.brexit.presentation.inflate
 import kotlinx.android.synthetic.main.list_item_week.view.*
+
+data class WeekItem(val articleList: ArrayList<ArticleItem> = ArrayList()) : ViewType {
+    override fun getViewType() = AdapterConstants.WEEK
+}
 
 class WeekDelegateAdapter(val onArticleClickListener: OnArticleClickListener) : ViewTypeDelegateAdapter {
 

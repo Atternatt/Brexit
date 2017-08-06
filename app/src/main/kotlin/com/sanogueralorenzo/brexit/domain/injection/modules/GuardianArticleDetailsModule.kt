@@ -10,7 +10,6 @@ import retrofit2.Retrofit
 
 @Module
 class GuardianArticleDetailsModule {
-
     @Provides
     fun provideArticleDetailsApi(retrofit: Retrofit): ArticleDetailsApi = retrofit.create(ArticleDetailsApi::class.java)
 
@@ -19,5 +18,4 @@ class GuardianArticleDetailsModule {
 
     @Provides
     fun provideArticleDetailsPresenter(articleDetailsRepository: ArticleDetailsRepository): GuardianArticleDetailsPresenter = GuardianArticleDetailsPresenter(articleDetailsRepository)
-
 }

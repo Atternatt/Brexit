@@ -13,7 +13,7 @@ import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.OnArticleClickListener
 import com.sanogueralorenzo.brexit.R
 import com.sanogueralorenzo.brexit.presentation.App
-import com.sanogueralorenzo.brexit.presentation.commons.adapter.ViewType
+import com.sanogueralorenzo.brexit.presentation.commons.ViewType
 import kotlinx.android.synthetic.main.activity_guardian_article_list.*
 import org.jetbrains.anko.toast
 import javax.inject.Inject
@@ -46,7 +46,7 @@ class GuardianArticleListActivity : AppCompatActivity(), GuardianArticleListView
     }
 
     @Inject
-    lateinit var guardianArticleListPresenter: GuardianArticleListPresenter
+    lateinit var presenter: GuardianArticleListPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,20 +73,17 @@ class GuardianArticleListActivity : AppCompatActivity(), GuardianArticleListView
 
     fun initSwipeRefreshLayout() {
         articleListSwipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.GREEN, Color.YELLOW)
-        articleListSwipeRefreshLayout.setOnRefreshListener({ guardianArticleListPresenter.getArticleList() })
+        articleListSwipeRefreshLayout.setOnRefreshListener({ presenter.getArticleList() })
         articleListSwipeRefreshLayout.isRefreshing = true
     }
 
     override fun onStart() {
         super.onStart()
-        guardianArticleListPresenter.attachView(this)
-        guardianArticleListPresenter.getCacheArticleList()
-        guardianArticleListPresenter.getArticleList()
+        presenter.attachView(this)
     }
 
     override fun onStop() {
-        guardianArticleListPresenter.dispose()
-        guardianArticleListPresenter.detachView()
+        presenter.detachView()
         super.onStop()
     }
 }

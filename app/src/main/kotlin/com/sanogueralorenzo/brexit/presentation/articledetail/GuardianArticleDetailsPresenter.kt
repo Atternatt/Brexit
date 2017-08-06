@@ -1,14 +1,21 @@
 package com.sanogueralorenzo.brexit.presentation.articledetail
 
 import com.sanogueralorenzo.brexit.domain.repositories.ArticleDetailsRepository
+import com.sanogueralorenzo.brexit.presentation.IView
 import com.sanogueralorenzo.brexit.presentation.Presenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class GuardianArticleDetailsPresenter(val articleDetailsRepository: ArticleDetailsRepository) : Presenter<GuardianArticleDetailsView>() {
+interface GuardianArticleDetailsView : IView {
+    fun addBodyText(body: String)
+    fun onError()
+    fun favoriteAdded()
+    fun favoriteDeleted()
+    fun setFavoriteIcon(favorite: Boolean)
+}
 
-    private var disposable: Disposable? = null
+class GuardianArticleDetailsPresenter(val articleDetailsRepository: ArticleDetailsRepository) : Presenter<GuardianArticleDetailsView>() {
 
     fun getCacheArticle(articleUrl: String) {
         val articleBody = articleDetailsRepository.getCacheArticle(articleUrl)
@@ -16,11 +23,11 @@ class GuardianArticleDetailsPresenter(val articleDetailsRepository: ArticleDetai
     }
 
     fun getArticle(articleUrl: String) {
-        disposable = articleDetailsRepository.getArticle(articleUrl)
+        disposable.add(articleDetailsRepository.getArticle(articleUrl)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext { save(articleUrl, it) }
-                .subscribe({ view?.addBodyText(it) }, { view?.onError() })
+                .subscribe({ view?.addBodyText(it) }, { view?.onError() }))
     }
 
     fun save(articleUrl: String, body: String) {
@@ -29,7 +36,7 @@ class GuardianArticleDetailsPresenter(val articleDetailsRepository: ArticleDetai
 
     fun saveFavorite(articleUrl: String) {
         val favoriteArticleUrlList = ArrayList<String>()
-        favoriteArticleUrlList.addAll(articleDetailsRepository.getFavoriteArticleList() ?: ArrayList<String>())
+        favoriteArticleUrlList.addAll(articleDetailsRepository.getFavoriteArticleList())
 
         favoriteArticleUrlList
                 .filter { it == articleUrl }
@@ -49,14 +56,10 @@ class GuardianArticleDetailsPresenter(val articleDetailsRepository: ArticleDetai
 
     fun checkFavoriteArticle(articleUrl: String) {
         val favoriteArticleUrlList = ArrayList<String>()
-        favoriteArticleUrlList.addAll(articleDetailsRepository.getFavoriteArticleList() ?: ArrayList<String>())
+        favoriteArticleUrlList.addAll(articleDetailsRepository.getFavoriteArticleList())
         favoriteArticleUrlList
                 .filter { it == articleUrl }
                 .forEach { view?.setFavoriteIcon(true) }
-    }
-
-    fun dispose() {
-        disposable?.dispose()
     }
 
 }

@@ -7,7 +7,14 @@ import com.sanogueralorenzo.brexit.presentation.dayMonthYearFormat
 import com.sanogueralorenzo.brexit.presentation.inflate
 import com.sanogueralorenzo.brexit.presentation.loadUrlRound
 import kotlinx.android.synthetic.main.list_item_article.view.*
+import java.io.Serializable
 import java.util.*
+
+data class ArticleItem(val id: String?, val title: String?, val url: String?, val date: Date?) : Serializable
+
+interface OnArticleClickListener {
+    fun onArticleClick(item: ArticleItem)
+}
 
 class ArticleAdapter(val listener: OnArticleClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

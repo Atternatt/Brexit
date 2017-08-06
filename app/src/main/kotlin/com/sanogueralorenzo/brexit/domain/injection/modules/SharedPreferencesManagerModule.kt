@@ -8,8 +8,6 @@ import javax.inject.Singleton
 
 @Module
 class SharedPreferencesManagerModule {
-
-    @Provides
-    @Singleton
+    @Provides @Singleton
     fun provideSharedPreferencesManager(app: App): SharedPreferencesManager = SharedPreferencesManager(app.applicationContext)
 }

@@ -7,9 +7,9 @@ import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.header.Heade
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.WeekDelegateAdapter
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.WeekItem
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.OnArticleClickListener
-import com.sanogueralorenzo.brexit.presentation.commons.adapter.AdapterConstants
-import com.sanogueralorenzo.brexit.presentation.commons.adapter.ViewType
-import com.sanogueralorenzo.brexit.presentation.commons.adapter.ViewTypeDelegateAdapter
+import com.sanogueralorenzo.brexit.presentation.commons.AdapterConstants
+import com.sanogueralorenzo.brexit.presentation.commons.ViewType
+import com.sanogueralorenzo.brexit.presentation.commons.ViewTypeDelegateAdapter
 
 class GuardianAdapter(onArticleClickListener: OnArticleClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

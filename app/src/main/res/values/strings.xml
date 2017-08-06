@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">The Guardian</string>
+    <string name="app_name">Brexit</string>
     <string name="no_article_title">No article title</string>
     <string name="no_article_date">No date</string>
     <string name="error_empty_article">Error empty article</string>

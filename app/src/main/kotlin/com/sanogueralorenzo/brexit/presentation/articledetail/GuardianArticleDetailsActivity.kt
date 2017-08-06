@@ -2,15 +2,11 @@ package com.sanogueralorenzo.brexit.presentation.articledetail
 
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.CoordinatorLayout
 import android.support.v7.app.AppCompatActivity
 import android.text.Html
 import com.sanogueralorenzo.brexit.R
-import com.sanogueralorenzo.brexit.presentation.App
+import com.sanogueralorenzo.brexit.presentation.*
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.ArticleItem
-import com.sanogueralorenzo.brexit.presentation.gone
-import com.sanogueralorenzo.brexit.presentation.loadUrl
 import kotlinx.android.synthetic.main.activity_guardian_article_details.*
 import org.jetbrains.anko.toast
 import javax.inject.Inject
@@ -44,7 +40,7 @@ class GuardianArticleDetailsActivity : AppCompatActivity(), GuardianArticleDetai
     }
 
     @Inject
-    lateinit var guardianArticleDetailsPresenter: GuardianArticleDetailsPresenter
+    lateinit var presenter: GuardianArticleDetailsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,39 +51,25 @@ class GuardianArticleDetailsActivity : AppCompatActivity(), GuardianArticleDetai
         val article = intent.extras.get("ARTICLE") as ArticleItem
 
         articleDetailsToolbar.setNavigationOnClickListener { onBackPressed() }
-        articleDetailsFavoriteImageView.setOnClickListener { guardianArticleDetailsPresenter.saveFavorite(article.id!!) }
+        articleDetailsFavoriteImageView.setOnClickListener { presenter.saveFavorite(article.id!!) }
         articleDetailsImageView.loadUrl(article.url)
         articleDetailsTitleTextView.text = article.title
 
-        guardianArticleDetailsPresenter.attachView(this)
-        guardianArticleDetailsPresenter.getCacheArticle(article.id!!)
-        guardianArticleDetailsPresenter.getArticle(article.id)
-        guardianArticleDetailsPresenter.checkFavoriteArticle(article.id)
+        presenter.attachView(this)
+        presenter.getCacheArticle(article.id!!)
+        presenter.getArticle(article.id)
+        presenter.checkFavoriteArticle(article.id)
 
         addTitleOffsetListener()
         removeAppBarLayoutScrolling()
     }
 
     fun addTitleOffsetListener() {
-        articleDetailsAppBarLayout.addOnOffsetChangedListener({ appBarLayout1, verticalOffset ->
-            val percentage = Math.abs(verticalOffset).toFloat() / appBarLayout1.getTotalScrollRange()
-            if (percentage.toInt() != 0) {
-                articleDetailsCollapsingToolbarLayout.title = resources.getString(R.string.app_name)
-            } else {
-                articleDetailsCollapsingToolbarLayout.title = " "
-            }
-        })
+        articleDetailsAppBarLayout.addCollapsingToolbarCollapsedTitle(articleDetailsCollapsingToolbarLayout, getString(R.string.app_name))
     }
 
     fun removeAppBarLayoutScrolling() {
-        val params = articleDetailsAppBarLayout.getLayoutParams() as CoordinatorLayout.LayoutParams
-        params.behavior = AppBarLayout.Behavior()
-        val behavior = params.behavior as AppBarLayout.Behavior
-        behavior.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
-            override fun canDrag(appBarLayout: AppBarLayout): Boolean {
-                return false
-            }
-        })
+        articleDetailsAppBarLayout.removeScrolling()
     }
 
     override fun onBackPressed() {
@@ -98,8 +80,7 @@ class GuardianArticleDetailsActivity : AppCompatActivity(), GuardianArticleDetai
     }
 
     override fun onDestroy() {
-        guardianArticleDetailsPresenter.dispose()
-        guardianArticleDetailsPresenter.detachView()
+        presenter.detachView()
         super.onDestroy()
     }
 }
