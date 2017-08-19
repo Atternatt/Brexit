@@ -33,15 +33,15 @@
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/ic_arrow_back_24dp" />
 
-            <ImageView
-                android:id="@+id/articleDetailsFavoriteImageView"
+            <ImageButton
+                android:id="@+id/articleDetailsFavoriteImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/regular_margin"
+                android:background="?selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_favorite_border_24dp"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:layout_collapseMode="pin" />
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 

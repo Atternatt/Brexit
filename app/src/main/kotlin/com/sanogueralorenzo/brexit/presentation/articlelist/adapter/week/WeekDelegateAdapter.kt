@@ -3,10 +3,10 @@ package com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.ArticleAdapter
-import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.OnArticleClickListener
 import com.sanogueralorenzo.brexit.R
+import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.ArticleAdapter
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.ArticleItem
+import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.OnArticleClickListener
 import com.sanogueralorenzo.brexit.presentation.commons.AdapterConstants
 import com.sanogueralorenzo.brexit.presentation.commons.ViewType
 import com.sanogueralorenzo.brexit.presentation.commons.ViewTypeDelegateAdapter
@@ -32,9 +32,7 @@ class WeekDelegateAdapter(val onArticleClickListener: OnArticleClickListener) : 
                 val linearLayout = LinearLayoutManager(context)
                 layoutManager = linearLayout
             }
-            articleRecyclerView.adapter = ArticleAdapter(onArticleClickListener)
-            (articleRecyclerView.adapter as ArticleAdapter).addItemList(item.articleList)
-            (articleRecyclerView.adapter as ArticleAdapter).notifyDataSetChanged()
+            articleRecyclerView.adapter = ArticleAdapter(onArticleClickListener, item.articleList)
         }
     }
 }

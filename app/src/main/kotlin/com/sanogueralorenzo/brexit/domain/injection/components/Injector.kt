@@ -7,7 +7,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(AppModule::class, SharedPreferencesManagerModule::class, RetrofitModule::class,
+@Component(modules = arrayOf(AppModule::class, LocalModule::class, RetrofitModule::class,
         GuardianArticleListModule::class, GuardianArticleDetailsModule::class))
 interface Injector {
     fun inject(activity: GuardianArticleListActivity)

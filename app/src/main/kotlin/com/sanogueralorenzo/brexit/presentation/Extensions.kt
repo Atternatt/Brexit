@@ -22,7 +22,7 @@ fun View.gone() {
 }
 
 fun ImageView.loadUrl(url: String?) {
-    Glide.with(this.context).load(url).into(this)
+    Glide.with(context).load(url).into(this)
 }
 
 fun ImageView.loadUrlRound(url: String?) {

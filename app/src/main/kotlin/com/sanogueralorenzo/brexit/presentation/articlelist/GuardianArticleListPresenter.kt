@@ -33,7 +33,7 @@ class GuardianArticleListPresenter(val articleListRepository: ArticleListReposit
     }
 
     fun getArticleList() {
-        disposable.add(articleListRepository.getArticleList(1)
+        addDisposable(articleListRepository.getArticleList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { it.response.results.orderByDescendingWebPublicationDate() }
@@ -61,7 +61,7 @@ class GuardianArticleListPresenter(val articleListRepository: ArticleListReposit
                         favoriteArticleList.add(createArticleItem(it))
                         resultList.remove(it)
                     }
-            if (!favoriteArticleList.isEmpty()){
+            if (!favoriteArticleList.isEmpty()) {
                 itemList.add(createHeaderItem("Favorites"))
                 itemList.add(createWeekItem(favoriteArticleList))
             }
@@ -95,9 +95,7 @@ class GuardianArticleListPresenter(val articleListRepository: ArticleListReposit
         }
     }
 
-    fun createArticleItem(result: Result): ArticleItem {
-        return ArticleItem(result.apiUrl, result.fields?.headline, result.fields?.thumbnail, result.webPublicationDate)
-    }
+    fun createArticleItem(result: Result): ArticleItem = ArticleItem(result.apiUrl, result.fields?.headline, result.fields?.thumbnail, result.webPublicationDate)
 
     fun createWeekItem(articleItemList: List<ArticleItem>): WeekItem {
         val weekItem = WeekItem()
@@ -105,11 +103,7 @@ class GuardianArticleListPresenter(val articleListRepository: ArticleListReposit
         return weekItem
     }
 
-    fun createHeaderItem(text: String): HeaderItem {
-        return HeaderItem(text)
-    }
+    fun createHeaderItem(text: String): HeaderItem = HeaderItem(text)
 
-    fun save(articleList: List<Result>) {
-        articleListRepository.saveArticleList(articleList)
-    }
+    fun save(articleList: List<Result>) = articleListRepository.saveArticleList(articleList)
 }

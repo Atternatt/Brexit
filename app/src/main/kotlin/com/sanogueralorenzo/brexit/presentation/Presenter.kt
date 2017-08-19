@@ -1,6 +1,7 @@
 package com.sanogueralorenzo.brexit.presentation
 
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 interface IView
 
@@ -11,19 +12,24 @@ interface IPresenter<in V : IView> {
 
 open class Presenter<V : IView> : IPresenter<V> {
 
-    protected var view: V? = null
-    protected val disposable : CompositeDisposable = CompositeDisposable()
+    var view: V? = null
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun attachView(view: V) {
         this.view = view
     }
 
     override fun detachView() {
+        clearDisposable()
         this.view = null
-        clear()
     }
 
-    private fun clear(){
-        disposable.clear()
+    fun addDisposable(disposable: Disposable) {
+        compositeDisposable.add(disposable)
     }
+
+    private fun clearDisposable() {
+        compositeDisposable.clear()
+    }
+
 }

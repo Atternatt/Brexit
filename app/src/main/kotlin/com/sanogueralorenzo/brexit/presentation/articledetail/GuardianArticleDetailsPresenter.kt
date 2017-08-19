@@ -3,11 +3,13 @@ package com.sanogueralorenzo.brexit.presentation.articledetail
 import com.sanogueralorenzo.brexit.domain.repositories.ArticleDetailsRepository
 import com.sanogueralorenzo.brexit.presentation.IView
 import com.sanogueralorenzo.brexit.presentation.Presenter
+import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.ArticleItem
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 interface GuardianArticleDetailsView : IView {
+    fun getArticleItem(): ArticleItem
+    fun init()
     fun addBodyText(body: String)
     fun onError()
     fun favoriteAdded()
@@ -17,22 +19,27 @@ interface GuardianArticleDetailsView : IView {
 
 class GuardianArticleDetailsPresenter(val articleDetailsRepository: ArticleDetailsRepository) : Presenter<GuardianArticleDetailsView>() {
 
+    override fun attachView(view: GuardianArticleDetailsView) {
+        super.attachView(view)
+        getCacheArticle(view.getArticleItem().id!!)
+        getArticle(view.getArticleItem().id!!)
+        checkFavoriteArticle(view.getArticleItem().id!!)
+    }
+
     fun getCacheArticle(articleUrl: String) {
         val articleBody = articleDetailsRepository.getCacheArticle(articleUrl)
         view?.addBodyText(articleBody)
     }
 
     fun getArticle(articleUrl: String) {
-        disposable.add(articleDetailsRepository.getArticle(articleUrl)
+        addDisposable(articleDetailsRepository.getArticle(articleUrl)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext { save(articleUrl, it) }
                 .subscribe({ view?.addBodyText(it) }, { view?.onError() }))
     }
 
-    fun save(articleUrl: String, body: String) {
-        articleDetailsRepository.saveArticle(articleUrl, body)
-    }
+    fun save(articleUrl: String, body: String) = articleDetailsRepository.saveArticle(articleUrl, body)
 
     fun saveFavorite(articleUrl: String) {
         val favoriteArticleUrlList = ArrayList<String>()
@@ -45,7 +52,6 @@ class GuardianArticleDetailsPresenter(val articleDetailsRepository: ArticleDetai
                     articleDetailsRepository.saveFavoriteArticleList(favoriteArticleUrlList)
                     view?.setFavoriteIcon(false)
                     view?.favoriteDeleted()
-                    return
                 }
 
         favoriteArticleUrlList.add(articleUrl)
