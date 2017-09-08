@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Brexit.iml" filepath="$PROJECT_DIR$/Brexit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Brexit.iml" filepath="$PROJECT_DIR$/.idea/Brexit.iml" />
+      <module fileurl="file://C:\Users\Mario\AndroidStudioProjects\Brexit\Brexit.iml" filepath="C:\Users\Mario\AndroidStudioProjects\Brexit\Brexit.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
