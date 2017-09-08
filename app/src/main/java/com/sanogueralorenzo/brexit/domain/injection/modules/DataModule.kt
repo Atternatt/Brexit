@@ -8,6 +8,7 @@ import javax.inject.Singleton
 
 @Module
 class DataModule {
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideData(app: App): Local = Local(app.applicationContext)
 }

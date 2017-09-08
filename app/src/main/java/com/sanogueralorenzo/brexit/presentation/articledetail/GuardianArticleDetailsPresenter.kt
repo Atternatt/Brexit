@@ -52,5 +52,4 @@ class GuardianArticleDetailsPresenter
                     }
                 }, { view?.onError() }))
     }
-
 }

@@ -9,7 +9,7 @@ import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-data class ArticlesFavoriteArticleIdsLists(val articleList: List<Result>, val favoriteArticleIdList:List<String>)
+data class ArticlesFavoriteArticleIdsLists(val articleList: List<Result>, val favoriteArticleIdList: List<String>)
 
 class CombineArticleListFavoriteArticleUrlListUseCase
 @Inject constructor
@@ -21,7 +21,7 @@ class CombineArticleListFavoriteArticleUrlListUseCase
 
     private fun data(): Observable<ArticlesFavoriteArticleIdsLists> {
         return Observables.zip(articleListRepository.getData(), favoriteArticleIdListRepository.getData(),
-                { articleList:List<Result>, favoriteArticleIdList: List<String> ->
+                { articleList: List<Result>, favoriteArticleIdList: List<String> ->
                     ArticlesFavoriteArticleIdsLists(articleList, favoriteArticleIdList)
                 }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -29,7 +29,7 @@ class CombineArticleListFavoriteArticleUrlListUseCase
 
     private fun network(): Observable<ArticlesFavoriteArticleIdsLists> {
         return Observables.zip(articleListRepository.getNetwork(), favoriteArticleIdListRepository.getData(),
-                { articleList:List<Result>, favoriteArticleIdList: List<String> ->
+                { articleList: List<Result>, favoriteArticleIdList: List<String> ->
                     ArticlesFavoriteArticleIdsLists(articleList, favoriteArticleIdList)
                 }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

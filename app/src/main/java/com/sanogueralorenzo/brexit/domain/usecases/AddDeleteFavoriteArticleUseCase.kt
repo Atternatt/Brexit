@@ -30,5 +30,4 @@ class AddDeleteFavoriteArticleUseCase
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
-
 }

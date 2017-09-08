@@ -6,7 +6,9 @@ import com.google.gson.Gson
 import java.lang.reflect.Type
 import javax.inject.Inject
 
-class Local @Inject constructor(context: Context) {
+class Local
+@Inject constructor
+(context: Context) {
     private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun saveString(key: String, value: String) = prefs.edit().putString(key, value).apply()
