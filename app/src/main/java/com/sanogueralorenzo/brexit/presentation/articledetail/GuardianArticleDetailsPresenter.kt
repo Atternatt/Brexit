@@ -33,7 +33,7 @@ class GuardianArticleDetailsPresenter
         getArticleDetails()
     }
 
-    fun getArticleDetails() {
+    private fun getArticleDetails() {
         addDisposable(combineArticleDetailsIsFavoriteUseCase.execute()
                 .subscribe({
                     view?.addBodyText(it.articleBody)

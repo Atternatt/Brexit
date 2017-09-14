@@ -17,7 +17,7 @@ class GuardianArticleDetailsActivity : AppCompatActivity(), GuardianArticleDetai
     @Inject
     lateinit var presenter: GuardianArticleDetailsPresenter
 
-    lateinit var article: ArticleItem
+    private lateinit var article: ArticleItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
