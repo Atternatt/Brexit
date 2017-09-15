@@ -22,7 +22,7 @@ class GuardianArticleDetailsPresenter
 private constructor
 (private val combineArticleDetailsIsFavoriteUseCase: CombineArticleDetailsIsFavoriteUseCase,
  private val addDeleteIsFavoriteUseCase: AddDeleteFavoriteArticleUseCase,
- guardianArticleDetailsView: GuardianArticleDetailsView)
+ override val view: WeakReference<GuardianArticleDetailsView>)
     : Presenter<GuardianArticleDetailsView>() {
 
     class GuardianArticleDetailsPresenterFactory
@@ -34,10 +34,8 @@ private constructor
         fun create(view: GuardianArticleDetailsView): GuardianArticleDetailsPresenter =
                 presenter ?: GuardianArticleDetailsPresenter(combineArticleDetailsIsFavoriteUseCase,
                         addDeleteIsFavoriteUseCase,
-                        view).apply { presenter = this }
+                        WeakReference(view)).apply { presenter = this }
     }
-
-    override val view: WeakReference<GuardianArticleDetailsView> = WeakReference(guardianArticleDetailsView)
 
     override fun attachView(view: GuardianArticleDetailsView) {
 
