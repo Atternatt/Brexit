@@ -25,7 +25,7 @@ private constructor
  override val view: WeakReference<GuardianArticleDetailsView>)
     : Presenter<GuardianArticleDetailsView>() {
 
-    class GuardianArticleDetailsPresenterFactory
+    class Factory
     @Inject constructor(private val combineArticleDetailsIsFavoriteUseCase: CombineArticleDetailsIsFavoriteUseCase,
                         private val addDeleteIsFavoriteUseCase: AddDeleteFavoriteArticleUseCase) {
 

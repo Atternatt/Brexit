@@ -28,7 +28,7 @@ private constructor
  override val view: WeakReference<GuardianArticleListView>)
     : Presenter<GuardianArticleListView>() {
 
-    class GuardianArticleListPresenterFactory
+    class Factory
     @Inject constructor(private val useCase: CombineArticleListFavoriteArticleUrlListUseCase,
                                               private val mapper: ArticlesFavoriteArticleIdsListsToViewTypeMapper) {
 

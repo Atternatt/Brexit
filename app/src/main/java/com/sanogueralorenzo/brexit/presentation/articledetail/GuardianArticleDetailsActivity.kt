@@ -15,7 +15,7 @@ import javax.inject.Inject
 class GuardianArticleDetailsActivity : AppCompatActivity(), GuardianArticleDetailsView {
 
     @Inject
-    lateinit var presenterFactory: GuardianArticleDetailsPresenter.GuardianArticleDetailsPresenterFactory
+    lateinit var presenterFactory: GuardianArticleDetailsPresenter.Factory
 
     private val presenter: GuardianArticleDetailsPresenter by lazy { presenterFactory.create(this) }
 

@@ -20,7 +20,7 @@ import javax.inject.Inject
 class GuardianArticleListActivity : AppCompatActivity(), GuardianArticleListView, OnArticleClickListener {
 
     @Inject
-    lateinit var presenterFactory: GuardianArticleListPresenter.GuardianArticleListPresenterFactory
+    lateinit var presenterFactory: GuardianArticleListPresenter.Factory
 
     val presenter: GuardianArticleListPresenter by lazy { presenterFactory.create(this) }
 
