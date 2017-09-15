@@ -15,19 +15,19 @@ import javax.inject.Inject
 class GuardianArticleDetailsActivity : AppCompatActivity(), GuardianArticleDetailsView {
 
     @Inject
-    lateinit var presenter: GuardianArticleDetailsPresenter
+    lateinit var presenterFactory: GuardianArticleDetailsPresenter.GuardianArticleDetailsPresenterFactory
 
-    private lateinit var article: ArticleItem
+    private val presenter: GuardianArticleDetailsPresenter by lazy { presenterFactory.create(this) }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_guardian_article_details)
         (application as App).injector?.inject(this)
-        article = intent.extras.get("ARTICLE") as ArticleItem
         init()
     }
 
-    override fun getArticleItem(): ArticleItem = article
+    override val articleItem: ArticleItem by lazy{ intent.extras.get("ARTICLE") as ArticleItem }
 
     override fun init() {
         articleDetailsToolbar.setNavigationOnClickListener { onBackPressed() }
@@ -35,8 +35,8 @@ class GuardianArticleDetailsActivity : AppCompatActivity(), GuardianArticleDetai
         articleDetailsAppBarLayout.addCollapsingToolbarCollapsedTitle(articleDetailsCollapsingToolbarLayout, getString(R.string.app_name))
         articleDetailsAppBarLayout.removeScrolling()
 
-        articleDetailsImageView.loadUrl(article.url)
-        articleDetailsTitleTextView.text = article.title
+        articleDetailsImageView.loadUrl(articleItem.url)
+        articleDetailsTitleTextView.text = articleItem.title
     }
 
     override fun setFavoriteIcon(favorite: Boolean) {

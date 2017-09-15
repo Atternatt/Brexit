@@ -11,6 +11,7 @@ import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article
 import com.sanogueralorenzo.brexit.presentation.commons.ViewType
 import com.sanogueralorenzo.brexit.presentation.isNewWeek
 import com.sanogueralorenzo.brexit.presentation.weekAgoFormat
+import java.lang.ref.WeakReference
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -21,20 +22,33 @@ interface GuardianArticleListView : IView {
 }
 
 class GuardianArticleListPresenter
-@Inject constructor
+private constructor
 (private val useCase: CombineArticleListFavoriteArticleUrlListUseCase,
- private val mapper: ArticlesFavoriteArticleIdsListsToViewTypeMapper)
+ private val mapper: ArticlesFavoriteArticleIdsListsToViewTypeMapper,
+ override val view: WeakReference<GuardianArticleListView>)
     : Presenter<GuardianArticleListView>() {
 
+    class GuardianArticleListPresenterFactory
+    @Inject constructor(private val useCase: CombineArticleListFavoriteArticleUrlListUseCase,
+                                              private val mapper: ArticlesFavoriteArticleIdsListsToViewTypeMapper) {
+
+        private var presenter: GuardianArticleListPresenter? = null
+
+        fun create(view: GuardianArticleListView) = presenter ?: GuardianArticleListPresenter(useCase,mapper, WeakReference(view)).apply { presenter = this }
+
+    }
+
     override fun attachView(view: GuardianArticleListView) {
-        super.attachView(view)
-        getArticleList()
     }
 
     fun getArticleList() {
         addDisposable(useCase.execute()
-                .subscribe({ view?.addItemList(mapper.map(it)) },
-                        { view?.onError() }))
+                .subscribe({ view.get()?.addItemList(mapper.map(it)) },
+                        { view.get()?.onError() }))
+    }
+
+    init {
+        getArticleList()
     }
 }
 

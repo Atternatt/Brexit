@@ -5,10 +5,11 @@ import com.sanogueralorenzo.brexit.domain.usecases.CombineArticleDetailsIsFavori
 import com.sanogueralorenzo.brexit.presentation.IView
 import com.sanogueralorenzo.brexit.presentation.Presenter
 import com.sanogueralorenzo.brexit.presentation.articlelist.adapter.week.article.ArticleItem
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 interface GuardianArticleDetailsView : IView {
-    fun getArticleItem(): ArticleItem
+    val articleItem: ArticleItem
     fun init()
     fun addBodyText(body: String)
     fun onError()
@@ -18,38 +19,55 @@ interface GuardianArticleDetailsView : IView {
 }
 
 class GuardianArticleDetailsPresenter
-@Inject constructor
+private constructor
 (private val combineArticleDetailsIsFavoriteUseCase: CombineArticleDetailsIsFavoriteUseCase,
- private val addDeleteIsFavoriteUseCase: AddDeleteFavoriteArticleUseCase)
+ private val addDeleteIsFavoriteUseCase: AddDeleteFavoriteArticleUseCase,
+ guardianArticleDetailsView: GuardianArticleDetailsView)
     : Presenter<GuardianArticleDetailsView>() {
 
+    class GuardianArticleDetailsPresenterFactory
+    @Inject constructor(private val combineArticleDetailsIsFavoriteUseCase: CombineArticleDetailsIsFavoriteUseCase,
+                        private val addDeleteIsFavoriteUseCase: AddDeleteFavoriteArticleUseCase) {
+
+        private var presenter: GuardianArticleDetailsPresenter? = null
+
+        fun create(view: GuardianArticleDetailsView): GuardianArticleDetailsPresenter =
+                presenter ?: GuardianArticleDetailsPresenter(combineArticleDetailsIsFavoriteUseCase,
+                        addDeleteIsFavoriteUseCase,
+                        view).apply { presenter = this }
+    }
+
+    override val view: WeakReference<GuardianArticleDetailsView> = WeakReference(guardianArticleDetailsView)
+
     override fun attachView(view: GuardianArticleDetailsView) {
-        super.attachView(view)
-        if (view.getArticleItem().id != null) {
-            val id = view.getArticleItem().id!!
-            combineArticleDetailsIsFavoriteUseCase.articleId = id
-            addDeleteIsFavoriteUseCase.articleId = id
-        }
-        getArticleDetails()
+
     }
 
     private fun getArticleDetails() {
         addDisposable(combineArticleDetailsIsFavoriteUseCase.execute()
                 .subscribe({
-                    view?.addBodyText(it.articleBody)
-                    view?.setFavoriteIcon(it.isFavorite)
-                }, { view?.onError() }))
+                    view.get()?.addBodyText(it.articleBody)
+                    view.get()?.setFavoriteIcon(it.isFavorite)
+                }, { view.get()?.onError() }))
     }
 
     fun addDeleteFavorite() {
         addDisposable(addDeleteIsFavoriteUseCase.execute()
                 .subscribe({
-                    view?.setFavoriteIcon(it)
+                    view.get()?.setFavoriteIcon(it)
                     if (it) {
-                        view?.favoriteAdded()
+                        view.get()?.favoriteAdded()
                     } else {
-                        view?.favoriteDeleted()
+                        view.get()?.favoriteDeleted()
                     }
-                }, { view?.onError() }))
+                }, { view.get()?.onError() }))
+    }
+
+    init {
+        view.get()?.articleItem?.id?.let {
+            combineArticleDetailsIsFavoriteUseCase.articleId = it
+            addDeleteIsFavoriteUseCase.articleId = it
+        }
+        getArticleDetails()
     }
 }

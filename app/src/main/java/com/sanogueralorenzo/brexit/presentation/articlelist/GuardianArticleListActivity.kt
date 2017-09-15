@@ -20,7 +20,9 @@ import javax.inject.Inject
 class GuardianArticleListActivity : AppCompatActivity(), GuardianArticleListView, OnArticleClickListener {
 
     @Inject
-    lateinit var presenter: GuardianArticleListPresenter
+    lateinit var presenterFactory: GuardianArticleListPresenter.GuardianArticleListPresenterFactory
+
+    val presenter: GuardianArticleListPresenter by lazy { presenterFactory.create(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

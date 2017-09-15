@@ -2,6 +2,7 @@ package com.sanogueralorenzo.brexit.presentation
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.lang.ref.WeakReference
 
 interface IView
 
@@ -10,18 +11,14 @@ interface IPresenter<in V : IView> {
     fun detachView()
 }
 
-open class Presenter<V : IView> : IPresenter<V> {
+abstract class Presenter<V : IView> : IPresenter<V> {
 
-    var view: V? = null
+    abstract val view: WeakReference<V>
+
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-
-    override fun attachView(view: V) {
-        this.view = view
-    }
 
     override fun detachView() {
         clearDisposable()
-        this.view = null
     }
 
     fun addDisposable(disposable: Disposable) {
